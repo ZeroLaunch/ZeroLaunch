@@ -32,8 +32,11 @@
 		  "description": "A high-performance static site generator in Python focused on zero friction from source to launch."
 		}
 		</script>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 		<script src="https://cdn.tailwindcss.com"></script>
 		<style>
+		:root { color-scheme: light; }
+		html, body { font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
 		.code-card { position: relative; overflow: hidden; border-radius: .5rem; transition: transform .22s ease, box-shadow .28s ease; border: 1px solid rgba(2,6,23,0.04); background: linear-gradient(180deg, #ffffff 0%, #fbfbff 100%); }
 		.code-card .code-inner { position: relative; z-index: 30; }
 		.code-card { box-shadow: 0 8px 30px rgba(2,6,23,0.06); }
@@ -109,11 +112,11 @@
 
 				<div class="order-first lg:order-last">
 					<div class="rounded-lg bg-white p-6 code-card mx-auto" tabindex="0">
-							<pre class="overflow-x-auto text-sm"><code class="language-none"># Run the example
-python example/zerolaunch.py
+							<pre class="overflow-x-auto text-sm"><code class="language-none"># Installing ZeroLaunch via pip
+pip install zerolaunch
 
-# Start a quick local preview
-python -m http.server --directory docs 8000
+# Serving your site
+zerolaunch s
 </code></pre>
 						</div>
 					</div>
@@ -200,7 +203,7 @@ python -m http.server --directory docs 8000
 				<div class="mt-4 space-y-4">
 					<div class="rounded-lg bg-white p-4">
 						<p class="font-semibold">Do I need any external dependencies?</p>
-						<p class="mt-1 text-sm text-slate-600">No — ZeroLaunch aims to run with the Python standard library; additional integrations are optional.</p>
+						<p class="mt-1 text-sm text-slate-600">No, ZeroLaunch aims to run with the Python standard library; additional integrations are optional.</p>
 					</div>
 					<div class="rounded-lg bg-white p-4">
 						<p class="font-semibold">Which Python versions are supported?</p>
@@ -208,7 +211,7 @@ python -m http.server --directory docs 8000
 					</div>
 					<div class="rounded-lg bg-white p-4">
 						<p class="font-semibold">Can I extend the pipeline?</p>
-						<p class="mt-1 text-sm text-slate-600">Yes — configuration is explicit and typed, allowing safe extension points for transforms and plugins.</p>
+						<p class="mt-1 text-sm text-slate-600">Yes, configuration is explicit and typed, allowing safe extension points for transforms and plugins.</p>
 					</div>
 				</div>
 			</section>
