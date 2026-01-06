@@ -9,7 +9,7 @@ cfg = {
 
 site = ZeroLaunch(src='site_src', dest='site_public', config=cfg)
 
-# --- Collections (Jekyll-style filesystem)
+# --- Collections
 site.add_collection('posts', path='content/posts', renderer='md')
 site.add_collection('pages', path='content/pages', renderer='md')
 
