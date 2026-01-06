@@ -10,20 +10,6 @@ cfg = {
 site = ZeroLaunch(src='site_src', dest='site_public', config=cfg)
 
 # --- Collections (Jekyll-style filesystem)
-# content/posts/2026-01-01-hello-world.md
-# ---
-# title: Hello World
-# slug: hello-world
-# tags: [intro, example]
-# categories: [tutorial]
-# date: 2026-01-01
-# published: true
-# ---
-# Markdown body...
-
-# Register two collections that read files from disk. The library should
-# parse front matter keys (YAML/TOML) into metadata and treat the rest
-# of the file as the page content.
 site.add_collection('posts', path='content/posts', renderer='md')
 site.add_collection('pages', path='content/pages', renderer='md')
 
@@ -32,7 +18,7 @@ site.register_renderer('md', engine='markdown', options={'extensions': ['fenced_
 site.register_renderer('rst', engine='docutils')
 site.register_renderer('adoc', engine='asciidoc')
 
-# --- Templates and helpers
+# --- Templates
 site.add_template('base.html', open('layouts/base.html').read())
 site.add_template('post.html', open('layouts/post.html').read())
 
@@ -59,14 +45,6 @@ site.create_page(
 # --- Static assets and pipeline
 site.copy_static('static/')
 site.add_asset('styles/main.scss')
-site.add_asset('scripts/app.ts')
-site.build_assets(pipeline=[
-	{'task': 'sass', 'input': 'styles/main.scss', 'output': 'assets/main.css'},
-	{'task': 'ts', 'input': 'scripts/app.ts', 'output': 'assets/app.js'},
-	{'task': 'bundle', 'inputs': ['assets/app.js'], 'output': 'assets/bundle.js'},
-	{'task': 'minify', 'inputs': ['assets/bundle.js'], 'output': 'assets/bundle.min.js'},
-	{'task': 'fingerprint', 'inputs': ['assets/bundle.min.js'], 'output': 'assets/bundle.min.[hash].js'},
-])
 
 # --- Plugins: sitemap, rss, image optimization
 site.register_plugin(Plugin('sitemap'))
