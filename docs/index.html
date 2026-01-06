@@ -10,7 +10,6 @@
 		<meta name="author" content="ZeroLaunch" />
 		<meta name="robots" content="index, follow" />
 		<meta name="theme-color" content="#0ea5e9" />
-
 		<!-- Open Graph / Facebook -->
 		<meta property="og:locale" content="en_US" />
 		<meta property="og:type" content="website" />
@@ -18,13 +17,11 @@
 		<meta property="og:description" content="ZeroLaunch: a high-performance static site generator in Python zero friction from source to launch." />
 		<meta property="og:url" content="https://example.com/" />
 		<meta property="og:image" content="https://example.com/og-image.png" />
-
 		<!-- Twitter -->
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content="ZeroLaunch - Zero friction static site generator" />
 		<meta name="twitter:description" content="ZeroLaunch: a high-performance static site generator in Python zero friction from source to launch." />
 		<meta name="twitter:image" content="https://example.com/og-image.png" />
-
 		<!-- JSON-LD structured data -->
 		<script type="application/ld+json">
 		{
@@ -37,13 +34,10 @@
 		</script>
 		<script src="https://cdn.tailwindcss.com"></script>
 		<style>
-		/* Rainbow glow code-card: animated conic gradient + blur for vibrant glow */
 		.code-card { position: relative; overflow: hidden; border-radius: .5rem; transition: transform .22s ease, box-shadow .28s ease; border: 1px solid rgba(2,6,23,0.04); background: linear-gradient(180deg, #ffffff 0%, #fbfbff 100%); }
 		.code-card .code-inner { position: relative; z-index: 30; }
 		.code-card { box-shadow: 0 8px 30px rgba(2,6,23,0.06); }
 		.code-card:focus-within, .code-card:hover { transform: translateY(-8px); box-shadow: 0 26px 60px rgba(2,6,23,0.14); }
-
-		/* animated rainbow pseudo-element (stronger visible glow) */
 		.code-card::before {
 			content: "";
 			position: absolute;
@@ -56,22 +50,15 @@
 			opacity: 0; transform: scale(.88) rotate(0deg); transition: opacity .36s ease, transform .6s cubic-bezier(.2,.9,.2,1);
 			mix-blend-mode: normal;
 		}
-
-		/* a subtle second layer for depth */
 		.code-card::after {
 			content: "";
 			position: absolute; inset: 0; z-index: 20; border-radius: inherit; pointer-events: none;
 			background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
 		}
-
 		.code-card:hover::before,
 		.code-card:focus-within::before { opacity: .78; transform: scale(1.05) rotate(22deg); }
-
-		/* subtle slow spin while visible (slower for a dreamy effect) */
 		@keyframes spinSlow { from { transform: scale(1) rotate(0deg); } to { transform: scale(1) rotate(360deg); } }
 		.code-card:hover::before { animation: spinSlow 12s linear infinite; }
-
-		/* ensure content stays above glow */
 		.code-card pre, .code-card code { position: relative; z-index: 40; }
 		</style>
 	</head>
@@ -292,11 +279,9 @@ python -m http.server --directory docs 8000
 		</main>
 
 		<footer class="border-t bg-white">
-			<div class="mx-auto max-w-6xl px-6 py-6 text-sm text-slate-500">© <span id="year"></span> ZeroLaunch — Built for engineers who value simplicity and control.</div>
+			<div class="mx-auto max-w-6xl px-6 py-6 text-sm text-slate-500">© <span id="year"></span> <b>ZeroLaunch</b> - Built for engineers who value simplicity and control.</div>
 		</footer>
 
-		<script>
-			document.getElementById('year').textContent = new Date().getFullYear();
-		</script>
+		<script type="text/javascript" src="script.js"></script>
 	</body>
 </html>
