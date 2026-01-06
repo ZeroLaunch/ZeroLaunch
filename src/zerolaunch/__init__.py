@@ -24,6 +24,16 @@ def write_text(path: Path, content: str) -> None:
 # ---------------------------------------------------------------------
 # Plugin
 # ---------------------------------------------------------------------
+class Plugin:
+    """Simple plugin wrapper with a name and options.
+
+    Plugins can be expanded later to include lifecycle hooks and
+    initialization logic. Having `name` explicitly typed helps static
+    checkers like Pylance understand usage such as `p.name`.
+    """
+    name: str
+    options: Dict[str, Any]
+
     def __init__(self, name: str, options: Optional[Dict[str, Any]] = None):
         self.name = name
         self.options = options or {}
@@ -128,7 +138,7 @@ class ZeroLaunch:
         self.collections: Dict[str, Dict[str, Any]] = {}
         self.renderers: Dict[str, Dict[str, Any]] = {}
         self.templates: Dict[str, str] = {}
-        self.filters: Dict[str, Callable] = {}
+        self.filters: Dict[str, Callable[..., Any]] = {}
         self.assets: List[str] = []
         self.plugins: List[Plugin] = []
         self.hooks: Dict[str, List[Callable[[ZeroLaunch], None]]] = {}
@@ -159,7 +169,7 @@ class ZeroLaunch:
     def add_template(self, name: str, content: str) -> None:
         self.templates[name] = content
 
-    def register_filter(self, name: str, fn: Callable) -> None:
+    def register_filter(self, name: str, fn: Callable[..., Any]) -> None:
         self.filters[name] = fn
 
     def register_plugin(self, plugin: Plugin) -> None:
