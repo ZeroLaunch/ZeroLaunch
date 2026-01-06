@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import shutil
 from pathlib import Path
-from typing import Callable, Dict, List, Optional, Any, Tuple
+from typing import Callable, Dict, List, Optional, Any, Tuple, cast
 
 
 # ---------------------------------------------------------------------
@@ -267,7 +267,8 @@ class ZeroLaunch:
             lines = ["---"]
             for k, v in front_matter.items():
                 if isinstance(v, list):
-                    lines.append(f"{k}: [{', '.join(map(str, v))}]")
+                    arr = cast(List[object], v)
+                    lines.append(f"{k}: [{', '.join(str(el) for el in arr)}]")
                 else:
                     lines.append(f"{k}: {v}")
             lines.append("---")
