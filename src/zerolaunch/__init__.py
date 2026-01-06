@@ -155,6 +155,76 @@ class ZeroLaunch:
             "renderer": renderer,
         }
 
+    def generate_collection_pages(self, collection: str, template: str, paginate: bool = False, per_page: int = 10) -> None:
+        """Generate index pages for a collection, with optional pagination.
+
+        The `template` should be a template name previously registered
+        via `add_template`. Templates can use the placeholders
+        `{{ items }}` and `{{ title }}`. When `paginate=True` this will
+        write `index.html`, `page2.html`, ... into the collection's
+        output folder under `self.dest`.
+        """
+        coll = self.collections.get(collection)
+        if not coll:
+            return
+
+        coll_path = self.src / coll["path"]
+        items: List[Dict[str, Any]] = []
+        for md in coll_path.rglob("*.md"):
+            fm, _ = parse_front_matter(read_text(md))
+            items.append({"path": md, "meta": fm})
+
+        out = self.dest / collection
+        ensure_dir(out)
+        tpl = self.templates.get(template)
+
+        def render_list(sub: List[Dict[str, Any]]) -> str:
+            return (
+                "<ul>"
+                + "\n".join([
+                    f"<li><a href='{i['path'].stem}.html'>{i['meta'].get('title','(untitled)')}</a></li>"
+                    for i in sub
+                ])
+                + "</ul>"
+            )
+
+        if not paginate:
+            content = render_list(items)
+            if tpl:
+                html = tpl.replace("{{ items }}", content).replace("{{ title }}", collection)
+            else:
+                html = content
+            write_text(out / "index.html", html)
+            return
+
+        if per_page <= 0:
+            per_page = 10
+        total = len(items)
+        pages = (total + per_page - 1) // per_page
+        for p in range(1, pages + 1):
+            start = (p - 1) * per_page
+            sub = items[start : start + per_page]
+            content = render_list(sub)
+
+            nav = ""
+            if pages > 1:
+                parts: List[str] = []
+                if p > 1:
+                    prev = "index.html" if p - 1 == 1 else f"page{p-1}.html"
+                    parts.append(f"<a href='{prev}'>Prev</a>")
+                if p < pages:
+                    nxt = f"page{p+1}.html"
+                    parts.append(f"<a href='{nxt}'>Next</a>")
+                nav = "<nav>" + " | ".join(parts) + "</nav>"
+
+            if tpl:
+                page_html = tpl.replace("{{ items }}", content).replace("{{ title }}", f"{collection} - page {p}") + nav
+            else:
+                page_html = content + nav
+
+            fname = "index.html" if p == 1 else f"page{p}.html"
+            write_text(out / fname, page_html)
+
     def register_renderer(
         self,
         ext: str,
@@ -239,6 +309,46 @@ class ZeroLaunch:
         if name not in self.taxonomies:
             self.taxonomies.append(name)
 
+    def generate_taxonomy_pages(self, taxonomy: str, template: str) -> None:
+        """Generate pages for each term in a taxonomy (tags, categories).
+
+        The `template` may use `{{ title }}` and `{{ items }}`.
+        """
+        coll = self.collections.get("posts")
+        if not coll:
+            return
+
+        coll_path = self.src / coll["path"]
+        tax_map: Dict[str, List[Dict[str, Any]]] = {}
+        for md in coll_path.rglob("*.md"):
+            fm, _ = parse_front_matter(read_text(md))
+            vals = fm.get(taxonomy) or fm.get(taxonomy[:-1])
+            if not vals:
+                continue
+            if isinstance(vals, str):
+                vals = [vals]
+            for v in vals:
+                tax_map.setdefault(v, []).append({"path": md, "meta": fm})
+
+        out_dir = self.dest / taxonomy
+        ensure_dir(out_dir)
+        tpl = self.templates.get(template)
+
+        for name, items in tax_map.items():
+            list_html = (
+                "<ul>"
+                + "\n".join([
+                    f"<li><a href='../posts/{p['path'].stem}.html'>{p['meta'].get('title','(untitled)')}</a></li>"
+                    for p in items
+                ])
+                + "</ul>"
+            )
+            if tpl:
+                html = tpl.replace("{{ title }}", name).replace("{{ items }}", list_html)
+            else:
+                html = f"<h1>{name}</h1>\n" + list_html
+            write_text(out_dir / f"{name}.html", html)
+    
     # -----------------------------------------------------------------
     # Build Pipeline
     # -----------------------------------------------------------------
@@ -248,10 +358,8 @@ class ZeroLaunch:
 
     def _render_page(self, body: str, meta: Dict[str, Any]) -> str:
         html_body = render_markdown(body)
-        template = self.templates.get(
-            "post.html",
-            "<html><head><title>{{ title }}</title></head><body>{{ content }}</body></html>",
-        )
+        default_template = "<html><head><title>{{ title }}</title></head><body>{{ content }}</body></html>"
+        template = self.templates.get("post.html", default_template)
         return (
             template
             .replace("{{ content }}", html_body)
@@ -305,6 +413,5 @@ class ZeroLaunch:
     # -----------------------------------------------------------------
     def deploy(self, target: str, options: Optional[Dict[str, Any]] = None) -> None:
         print(f"[ZeroLaunch] Deploy target={target}, options={options} (plugin stub)")
-
-
+        
 __all__ = ["ZeroLaunch", "Plugin"]
