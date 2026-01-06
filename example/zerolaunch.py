@@ -105,24 +105,3 @@ site.deploy(target='sftp', options={
 	'path': '/var/www/site',
     'port': 2222
 })
-
-# --- Migrations and export
-# site.import_from_wordpress(xml='wp-export.xml')
-# site.import_from_hugo(dir='hugo_site')
-# site.export_content(format='json', dest='backup/content.json')
-
-# --- Headless API
-# site.run_api(port=8081, auth={'token': 'secret'})
-
-# --- Search index
-# site.build_search_index(collections=['posts', 'pages'], output='search/index.json')
-# site.push_search_index(provider='algolia', options={'app_id': 'XXX', 'api_key': 'YYY', 'index': 'my-site'})
-
-# --- Image processing
-# site.add_image('images/hero.jpg')
-# site.process_images(rules=[{'resize': [800, 600], 'format': 'webp', 'quality': 80}, {'resize': [400, 300], 'format': 'jpeg'}])
-
-# --- i18n
-# site.config['default_locale'] = 'en'
-# site.add_locale('es')
-# site.add_locale('fr')
