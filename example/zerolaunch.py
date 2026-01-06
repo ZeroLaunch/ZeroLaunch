@@ -1,4 +1,4 @@
-from zerolaunch import ZeroLaunch, Structure, Plugin
+from zerolaunch import ZeroLaunch, Plugin
 
 # --- Configuration
 cfg = {
@@ -9,24 +9,28 @@ cfg = {
 
 site = ZeroLaunch(src='site_src', dest='site_public', config=cfg)
 
-# --- Structures (collections)
-post = Structure('post')
-post.add_field('id', type='int', primary=True)
-post.add_field('title', type='string', required=True)
-post.add_field('slug', type='string', index=True)
-post.add_field('summary', type='string')
-post.add_field('content', type='markdown')
-post.add_field('created_at', type='datetime', default='now')
-post.add_field('published', type='bool', default=False)
-post.add_field('tags', type='list')
+# --- Collections (Jekyll-style filesystem)
+# Prefer simple filesystem collections using YAML front matter in Markdown files.
+# Example layout:
+# content/posts/2026-01-01-hello-world.md
+# ---
+# title: Hello World
+# slug: hello-world
+# tags: [intro, example]
+# categories: [tutorial]
+# date: 2026-01-01
+# published: true
+# ---
+# Markdown body...
 
-author = Structure('author')
-author.add_field('id', type='int', primary=True)
-author.add_field('name', type='string')
-author.add_field('bio', type='string')
+# Register two collections that read files from disk. The library should
+# parse front matter keys (YAML/TOML) into metadata and treat the rest
+# of the file as the page content.
+site.add_collection('posts', path='content/posts', renderer='md')
+site.add_collection('pages', path='content/pages', renderer='md')
 
-site.add_structure(post)
-site.add_structure(author)
+# You can still programmatically create single pages if needed (optional):
+# site.create_page(collection='posts', path='welcome.md', front_matter={...}, content='...')
 
 # --- Renderers
 site.register_renderer('md', engine='markdown', options={'extensions': ['fenced_code', 'tables', 'codehilite']})
@@ -79,8 +83,10 @@ site.add_redirect('/old-page.html', '/new-page.html', status=301)
 
 # --- Taxonomies, pagination and indexes
 site.add_taxonomy('tags')
+site.add_taxonomy('categories')
 site.generate_collection_pages(collection='posts', template='posts_index.html', paginate=True, per_page=10)
 site.generate_taxonomy_pages('tags', template='tag_list.html')
+site.generate_taxonomy_pages('categories', template='category_list.html')
 
 # --- i18n
 site.config['default_locale'] = 'en'
@@ -92,18 +98,6 @@ site.build(i18n=True)
 
 # --- Drafts and scheduled publishing
 site.create_page(path='drafts/future.md', front_matter={'title': 'Future Post', 'date': '2099-01-01', 'published': False}, content='...')
-site.build(include_drafts=False, publish_scheduled=True)
-
-# --- Search index
-site.build_search_index(collections=['posts', 'pages'], output='search/index.json')
-site.push_search_index(provider='algolia', options={'app_id': 'XXX', 'api_key': 'YYY', 'index': 'my-site'})
-
-# --- Image processing
-site.add_image('images/hero.jpg')
-site.process_images(rules=[{'resize': [800, 600], 'format': 'webp', 'quality': 80}, {'resize': [400, 300], 'format': 'jpeg'}])
-
-# --- Headless API
-site.run_api(port=8081, auth={'token': 'secret'})
 
 # --- Hooks and pipeline
 def before(site_obj):
@@ -113,9 +107,32 @@ site.register_hook('before_build', before)
 
 # --- Deploy
 site.build(output_format='static')
-site.deploy(target='s3', options={'bucket': 'my-bucket', 'region': 'us-east-1'})
+site.deploy(target='ftp', options={
+	'host': 'ftp.example.com',
+	'user': 'ftpuser',
+	'password': 'your-password',
+	'path': '/public_html',
+})
+site.deploy(target='sftp', options={
+	'host': 'ssh.example.com',
+	'user': 'deploy',
+	'key': '~/.ssh/id_rsa',
+	'path': '/var/www/site',
+    'port': 2222
+})
 
 # --- Migrations and export
-site.import_from_wordpress(xml='wp-export.xml')
-site.import_from_hugo(dir='hugo_site')
-site.export_content(format='json', dest='backup/content.json')
+# site.import_from_wordpress(xml='wp-export.xml')
+# site.import_from_hugo(dir='hugo_site')
+# site.export_content(format='json', dest='backup/content.json')
+
+# --- Headless API
+# site.run_api(port=8081, auth={'token': 'secret'})
+
+# --- Search index
+# site.build_search_index(collections=['posts', 'pages'], output='search/index.json')
+# site.push_search_index(provider='algolia', options={'app_id': 'XXX', 'api_key': 'YYY', 'index': 'my-site'})
+
+# --- Image processing
+# site.add_image('images/hero.jpg')
+# site.process_images(rules=[{'resize': [800, 600], 'format': 'webp', 'quality': 80}, {'resize': [400, 300], 'format': 'jpeg'}])
