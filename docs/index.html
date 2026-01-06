@@ -39,11 +39,6 @@
 		html, body { font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
 		body { background: radial-gradient(1200px 400px at 10% 10%, rgba(99,102,241,0.03), transparent 6%), radial-gradient(800px 300px at 90% 90%, rgba(6,182,212,0.02), transparent 6%), linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); }
 		.code-card { position: relative; overflow: hidden; border-radius: .5rem; transition: transform .22s ease, box-shadow .28s ease; border: 1px solid rgba(2,6,23,0.04); background: linear-gradient(180deg, #ffffff 0%, #fbfbff 100%); }
-		/* hero gradient text */
-		.hero-gradient { background: linear-gradient(90deg, var(--accent-1), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
-		/* section heading accent underline */
-		.section-title { color: #1e293b; }
-		.section-accent { width: 56px; height: 6px; border-radius: 9999px; background: linear-gradient(90deg, var(--accent-1), var(--accent-2)); margin-top: 0.5rem; }
 		.code-card .code-inner { position: relative; z-index: 30; }
 		.code-card { box-shadow: 0 8px 30px rgba(2,6,23,0.06); }
 		.code-card:focus-within, .code-card:hover { transform: translateY(-8px); box-shadow: 0 26px 60px rgba(2,6,23,0.14); }
@@ -70,20 +65,30 @@
 		.code-card:hover::before { animation: spinSlow 12s linear infinite; }
 		.code-card pre, .code-card code { position: relative; z-index: 40; }
 
-		/* Core Philosophy cards */
-		.philosophy-grid { display: grid; gap: 1rem; grid-template-columns: 1fr; }
-		@media (min-width: 768px) { .philosophy-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
-		.philosophy-card { display:flex; gap:1rem; align-items:flex-start; background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%); border-radius:.6rem; padding:1.25rem; box-shadow:0 8px 24px rgba(2,6,23,0.04); transition:transform .18s ease, box-shadow .18s ease; border-left:6px solid rgba(99,102,241,0.10); }
-		.philosophy-card:hover{ transform: translateY(-6px); box-shadow:0 20px 60px rgba(2,6,23,0.08); }
-		.philosophy-icon { width:44px;height:44px;flex:0 0 44px;border-radius:9999px;display:grid;place-items:center;color:white; }
-		.icon-1{ background:linear-gradient(90deg,var(--accent-1),#8b5cf6);} 
-		.icon-2{ background:linear-gradient(90deg,#06b6d4,#34d399);} 
-		.icon-3{ background:linear-gradient(90deg,#f59e0b,#f472b6);} 
-		.icon-4{ background:linear-gradient(90deg,#7c3aed,#06b6d4);} 
-
-		/* Get started callout */
-		.callout { background: linear-gradient(180deg, rgba(99,102,241,0.03), rgba(6,182,212,0.02)); border-radius:.5rem; padding:1rem; }
-		.code-snippet { background: rgba(15,23,42,0.02); border-radius:.5rem; padding:.75rem; border:1px solid rgba(2,6,23,0.04); }
+		/* keep only complex rules not expressible via Tailwind utilities */
+		/* code-card glow + overlay */
+		.code-card::before {
+			content: "";
+			position: absolute;
+			inset: -50%;
+			z-index: 10;
+			border-radius: 9999px;
+			pointer-events: none;
+			background: conic-gradient(from 0deg, #ff3cac, #ff6b3d, #ffd93d, #8cff4a, #3af3ff, #5b4bff, #c86bff, #ff3cac);
+			filter: blur(64px) saturate(1.35);
+			opacity: 0; transform: scale(.88) rotate(0deg); transition: opacity .36s ease, transform .6s cubic-bezier(.2,.9,.2,1);
+			mix-blend-mode: normal;
+		}
+		.code-card::after {
+			content: "";
+			position: absolute; inset: 0; z-index: 20; border-radius: inherit; pointer-events: none;
+			background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+		}
+		.code-card:hover::before,
+		.code-card:focus-within::before { opacity: .78; transform: scale(1.05) rotate(22deg); }
+		@keyframes spinSlow { from { transform: scale(1) rotate(0deg); } to { transform: scale(1) rotate(360deg); } }
+		.code-card:hover::before { animation: spinSlow 12s linear infinite; }
+		.code-card pre, .code-card code { position: relative; z-index: 40; }
 		</style>
 	</head>
 	<body class="bg-slate-50 text-slate-800 antialiased">
@@ -107,7 +112,7 @@
 			<section class="grid gap-8 lg:grid-cols-2 lg:items-center">
 				<div>
 					<p class="text-sm font-medium text-sky-600">Static site generator • Python</p>
-					  <h2 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl hero-gradient">Zero friction from source to launch</h2>
+					  <h2 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl bg-gradient-to-r from-indigo-500 to-cyan-500 bg-clip-text text-transparent">Zero friction from source to launch</h2>
 					  <p class="mt-4 text-slate-600 max-w-[70ch]">ZeroLaunch is a high-performance static site generator built in Python. It focuses on minimal configuration, deterministic builds, and fast, reproducible output so you can build, preview, and deploy without unexpected complexity or third-party dependencies.</p>
 
 					<div class="mt-6 flex gap-3">
@@ -145,8 +150,8 @@ zerolaunch s
 			</section>
 
 			<section id="how-it-works" class="mt-16">
-				<h3 class="text-2xl font-bold section-title">How it works</h3>
-				<div class="section-accent"></div>
+				<h3 class="text-2xl font-bold text-slate-900">How it works</h3>
+				<div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-500 mt-2"></div>
 				<p class="mt-4 text-slate-600 max-w-[70ch]">ZeroLaunch follows a simple, deterministic pipeline so your site builds are reproducible and fast. The default flow runs without configuration, but exposes a typed configuration for power users.</p>
 				<div class="mt-6 grid gap-6 sm:grid-cols-3">
 					<div class="rounded-lg bg-white p-6 shadow-sm">
@@ -187,8 +192,8 @@ zerolaunch s
 			</section>
 
 			<section id="use-cases" class="mt-16">
-				<h3 class="text-2xl font-bold section-title">Use cases</h3>
-				<div class="section-accent"></div>
+				<h3 class="text-2xl font-bold text-slate-900">Use cases</h3>
+				<div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-500 mt-2"></div>
 				<div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 					<div class="rounded-lg bg-white p-5">
 						<h4 class="font-semibold">Docs & knowledge bases</h4>
@@ -206,8 +211,8 @@ zerolaunch s
 			</section>
 
 			<section id="cli" class="mt-16">
-				<h3 class="text-2xl font-bold section-title">CLI quick reference</h3>
-				<div class="section-accent"></div>
+				<h3 class="text-2xl font-bold text-slate-900">CLI quick reference</h3>
+				<div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-500 mt-2"></div>
 				<p class="mt-3 text-slate-600">Common commands to build, preview, and inspect your site.</p>
 				<div class="mt-4 rounded-lg bg-white p-4 shadow-sm">
 					<pre class="overflow-x-auto text-sm"><code>## Build the site
@@ -223,8 +228,8 @@ zerolaunch s
 			</section>
 
 			<section id="faq" class="mt-16">
-				<h3 class="text-2xl font-bold section-title">FAQ</h3>
-				<div class="section-accent"></div>
+				<h3 class="text-2xl font-bold text-slate-900">FAQ</h3>
+				<div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-500 mt-2"></div>
 				<div class="mt-4 space-y-4">
 					<div class="rounded-lg bg-white p-4">
 						<p class="font-semibold">Do I need any external dependencies?</p>
@@ -242,8 +247,8 @@ zerolaunch s
 			</section>
 
 			<section id="features" class="mt-16">
-				<h3 class="text-2xl font-bold section-title">Features</h3>
-				<div class="section-accent"></div>
+				<h3 class="text-2xl font-bold text-slate-900">Features</h3>
+				<div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-500 mt-2"></div>
 				<div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 					<article class="rounded-lg border bg-white p-5 border-l-4 border-indigo-100 hover:shadow-lg transition-shadow">
 						<h4 class="font-semibold">No third-party runtime</h4>
@@ -273,11 +278,11 @@ zerolaunch s
 			</section>
 
 			<section id="philosophy" class="mt-16">
-				<h3 class="text-2xl font-bold section-title">Core Philosophy</h3>
-				<div class="section-accent"></div>
-				<div class="mt-6 philosophy-grid">
-					<div class="philosophy-card">
-						<div class="philosophy-icon icon-1">
+				<h3 class="text-2xl font-bold text-slate-900">Core Philosophy</h3>
+				<div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-500 mt-2"></div>
+				<div class="mt-6 grid gap-4 grid-cols-1 md:grid-cols-2">
+					<div class="flex gap-4 items-start bg-white rounded-lg p-5 shadow border-l-4 border-indigo-100 hover:-translate-y-1 hover:shadow-lg transition">
+						<div class="w-11 h-11 rounded-full grid place-items-center text-white bg-gradient-to-r from-indigo-500 to-violet-500">
 							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3"/></svg>
 						</div>
 						<div>
@@ -285,8 +290,8 @@ zerolaunch s
 							<p class="mt-2 text-sm text-slate-600">Sensible defaults allow projects to run immediately — no boilerplate, no mandatory config files.</p>
 						</div>
 					</div>
-					<div class="philosophy-card">
-						<div class="philosophy-icon icon-2">
+					<div class="flex gap-4 items-start bg-white rounded-lg p-5 shadow border-l-4 border-teal-100 hover:-translate-y-1 hover:shadow-lg transition">
+						<div class="w-11 h-11 rounded-full grid place-items-center text-white bg-gradient-to-r from-teal-400 to-emerald-500">
 							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3"/></svg>
 						</div>
 						<div>
@@ -294,8 +299,8 @@ zerolaunch s
 							<p class="mt-2 text-sm text-slate-600">When customization is needed, ZeroLaunch favors clear, typed configuration and transparent build steps.</p>
 						</div>
 					</div>
-					<div class="philosophy-card">
-						<div class="philosophy-icon icon-3">
+					<div class="flex gap-4 items-start bg-white rounded-lg p-5 shadow border-l-4 border-orange-100 hover:-translate-y-1 hover:shadow-lg transition">
+						<div class="w-11 h-11 rounded-full grid place-items-center text-white bg-gradient-to-r from-orange-400 to-pink-400">
 							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h4l3 8 4-16 3 8h4"/></svg>
 						</div>
 						<div>
@@ -303,8 +308,8 @@ zerolaunch s
 							<p class="mt-2 text-sm text-slate-600">Reproducible output with aggressive caching and parallel execution for predictable results.</p>
 						</div>
 					</div>
-					<div class="philosophy-card">
-						<div class="philosophy-icon icon-4">
+					<div class="flex gap-4 items-start bg-white rounded-lg p-5 shadow border-l-4 border-violet-100 hover:-translate-y-1 hover:shadow-lg transition">
+						<div class="w-11 h-11 rounded-full grid place-items-center text-white bg-gradient-to-r from-violet-600 to-cyan-400">
 							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6l4 2"/></svg>
 						</div>
 						<div>
@@ -316,14 +321,26 @@ zerolaunch s
 			</section>
 
 			<section id="get-started" class="mt-16 mb-24">
-				<h3 class="text-2xl font-bold">Get started</h3>
-				<p class="mt-3 text-slate-600">Clone the repo, run the example, and preview the `docs` folder locally.</p>
-				<div class="mt-4 rounded-lg bg-white p-4 shadow-sm">
-					<pre class="overflow-x-auto text-sm"><code>git clone <repo_url>
-cd ZeroLaunch
-python example/zerolaunch.py
-python -m http.server --directory docs 8000
-</code></pre>
+				<h3 class="text-2xl font-bold text-slate-900">Get started</h3>
+				<div class="w-14 h-1.5 rounded-full bg-gradient-to-r from-indigo-500 to-cyan-500 mt-2 float-right -mt-8"></div>
+				<p class="mt-3 max-w-[70ch] text-sm text-slate-600">Install with pip, point ZeroLaunch at a directory containing Markdown or Jinja templates, and run <span class="font-mono text-slate-800">zerolaunch build</span> to produce a static site folder ready for deployment.</p>
+				<div class="mt-6 grid gap-6 md:grid-cols-2">
+					<div class="bg-white rounded-lg p-4 border border-slate-100">
+						<h4 class="font-semibold">Quickstart (local)</h4>
+						<pre class="mt-3 bg-slate-900 text-slate-100 p-3 rounded-md overflow-auto font-mono text-sm"><code>python -m pip install zerolaunch
+zerolaunch init my-site
+cd my-site
+zerolaunch build
+zerolaunch serve</code></pre>
+					</div>
+					<div class="bg-white rounded-lg p-4 border border-slate-100">
+						<h4 class="font-semibold">Why ZeroLaunch</h4>
+						<p class="mt-2 text-sm text-slate-600">Small binary, simple mental model, works with plain Markdown and templates. Designed for fast iteration and reliable CI builds.</p>
+					</div>
+				</div>
+				<div class="mt-6 flex items-center gap-4">
+					<a href="#" class="inline-flex items-center gap-2 rounded-md bg-gradient-to-r from-rose-400 via-fuchsia-500 to-indigo-500 px-4 py-2 text-white shadow hover:scale-[1.02] transition">Try the CLI</a>
+					<span class="text-sm text-slate-500">Or explore the example site in the <a href="/example/zerolaunch.py" class="text-indigo-600">example</a> folder.</span>
 				</div>
 			</section>
 		</main>
