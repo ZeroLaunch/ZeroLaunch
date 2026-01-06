@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>ZeroLaunch - Zero friction static site generator</title>
+		<meta name="description" content="ZeroLaunch: a high-performance static site generator in Python  zero friction from source to launch." />
+		<script src="https://cdn.tailwindcss.com"></script>
+	</head>
+	<body class="bg-slate-50 text-slate-800 antialiased">
+		<header class="bg-white border-b">
+			<div class="mx-auto max-w-6xl px-6 py-5 flex items-center justify-between">
+				<div class="flex items-center gap-3">
+					<div class="h-10 w-10 rounded-md bg-gradient-to-br from-sky-500 to-indigo-600 flex items-center justify-center text-white font-semibold">ZL</div>
+					<h1 class="text-lg font-semibold">ZeroLaunch</h1>
+				</div>
+				<nav class="flex items-center gap-4 text-sm">
+					<a href="#features" class="text-slate-600 hover:text-slate-900">Features</a>
+					<a href="#philosophy" class="text-slate-600 hover:text-slate-900">Philosophy</a>
+					<a href="/example/zerolaunch.py" class="rounded-md bg-sky-600 text-white px-3 py-1 text-sm hover:bg-sky-700">Try Example</a>
+				</nav>
+			</div>
+		</header>
+
+		<main class="mx-auto max-w-6xl px-6 py-16">
+			<section class="grid gap-8 lg:grid-cols-2 lg:items-center">
+				<div>
+					<p class="text-sm font-medium text-sky-600">Static site generator • Python</p>
+					<h2 class="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">Zero friction from source to launch</h2>
+					  <p class="mt-4 text-slate-600 max-w-[70ch]">ZeroLaunch is a high-performance static site generator built in Python. It focuses on minimal configuration, deterministic builds, and fast, reproducible output so you can build, preview, and deploy without unexpected complexity or third-party dependencies.</p>
+
+					<div class="mt-6 flex gap-3">
+						<a href="#get-started" class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-white shadow hover:bg-indigo-700">Get Started</a>
+						<a href="#philosophy" class="inline-flex items-center rounded-md border border-slate-200 px-4 py-2 text-slate-700 hover:bg-slate-50">Read Philosophy</a>
+					</div>
+
+					<div class="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-3">
+						<div class="rounded-lg bg-white p-4 shadow-sm">
+							<p class="text-sm font-medium text-slate-700">Zero configuration</p>
+							<p class="mt-1 text-sm text-slate-500">Sensible defaults so projects run immediately.</p>
+						</div>
+						<div class="rounded-lg bg-white p-4 shadow-sm">
+							<p class="text-sm font-medium text-slate-700">Deterministic builds</p>
+							<p class="mt-1 text-sm text-slate-500">Reproducible output with caching and parallelism.</p>
+						</div>
+						<div class="rounded-lg bg-white p-4 shadow-sm">
+							<p class="text-sm font-medium text-slate-700">Pythonic & typed</p>
+							<p class="mt-1 text-sm text-slate-500">Modern Python 3.11+ with static typing.</p>
+						</div>
+					</div>
+				</div>
+
+				<div class="order-first lg:order-last">
+					<div class="rounded-xl bg-gradient-to-br from-slate-900 to-indigo-900 p-1 shadow-lg">
+						<div class="rounded-lg bg-white p-6">
+							<pre class="overflow-x-auto text-sm"><code class="language-none"># Run the example
+python example/zerolaunch.py
+
+# Start a quick local preview
+python -m http.server --directory docs 8000
+</code></pre>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section id="features" class="mt-16">
+				<h3 class="text-2xl font-bold">Features</h3>
+				<div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+					<article class="rounded-lg border bg-white p-5">
+						<h4 class="font-semibold">No third-party runtime</h4>
+						<p class="mt-2 text-sm text-slate-600">ZeroLaunch runs with pure Python no extra libraries required to produce static sites.</p>
+					</article>
+					<article class="rounded-lg border bg-white p-5">
+						<h4 class="font-semibold">Fast builds</h4>
+						<p class="mt-2 text-sm text-slate-600">Aggressive caching and parallel execution minimize build times for large sites.</p>
+					</article>
+					<article class="rounded-lg border bg-white p-5">
+						<h4 class="font-semibold">Extensible</h4>
+						<p class="mt-2 text-sm text-slate-600">A clear, typed configuration model enables safe customizations when needed.</p>
+					</article>
+					<article class="rounded-lg border bg-white p-5">
+						<h4 class="font-semibold">Determinism</h4>
+						<p class="mt-2 text-sm text-slate-600">Reproducible output across environments and runs.</p>
+					</article>
+					<article class="rounded-lg border bg-white p-5">
+						<h4 class="font-semibold">Preview & deploy</h4>
+						<p class="mt-2 text-sm text-slate-600">Simple local preview and straightforward artifact output for CDNs and static hosts.</p>
+					</article>
+					<article class="rounded-lg border bg-white p-5">
+						<h4 class="font-semibold">Developer ergonomics</h4>
+						<p class="mt-2 text-sm text-slate-600">Minimal mental overhead with clear UX for common workflows.</p>
+					</article>
+				</div>
+			</section>
+
+			<section id="philosophy" class="mt-16">
+				<h3 class="text-2xl font-bold">Core Philosophy</h3>
+				<div class="mt-4 grid gap-4 md:grid-cols-2">
+					<div class="rounded-lg bg-white p-6">
+						<h4 class="font-semibold">Zero Configuration by Default</h4>
+						<p class="mt-2 text-sm text-slate-600">Sensible defaults allow projects to run immediately no boilerplate, no mandatory config files.</p>
+					</div>
+					<div class="rounded-lg bg-white p-6">
+						<h4 class="font-semibold">Explicit Over Implicit</h4>
+						<p class="mt-2 text-sm text-slate-600">When customization is needed, ZeroLaunch favors clear, typed configuration and transparent build steps.</p>
+					</div>
+					<div class="rounded-lg bg-white p-6">
+						<h4 class="font-semibold">Fast, Deterministic Builds</h4>
+						<p class="mt-2 text-sm text-slate-600">Reproducible output with aggressive caching and parallel execution for predictable results.</p>
+					</div>
+					<div class="rounded-lg bg-white p-6">
+						<h4 class="font-semibold">Pythonic, Type-Safe Design</h4>
+						<p class="mt-2 text-sm text-slate-600">Implemented using modern Python (3.11+), static typing, and clean architectural boundaries.</p>
+					</div>
+				</div>
+			</section>
+
+			<section id="get-started" class="mt-16 mb-24">
+				<h3 class="text-2xl font-bold">Get started</h3>
+				<p class="mt-3 text-slate-600">Clone the repo, run the example, and preview the `docs` folder locally.</p>
+				<div class="mt-4 rounded-lg bg-white p-4 shadow-sm">
+					<pre class="overflow-x-auto text-sm"><code>git clone <repo_url>
+cd ZeroLaunch
+python example/zerolaunch.py
+python -m http.server --directory docs 8000
+</code></pre>
+				</div>
+			</section>
+		</main>
+
+		<footer class="border-t bg-white">
+			<div class="mx-auto max-w-6xl px-6 py-6 text-sm text-slate-500">© <span id="year"></span> ZeroLaunch — Built for engineers who value simplicity and control.</div>
+		</footer>
+
+		<script>
+			document.getElementById('year').textContent = new Date().getFullYear();
+		</script>
+	</body>
+</html>
