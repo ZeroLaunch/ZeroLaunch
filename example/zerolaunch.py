@@ -10,8 +10,6 @@ cfg = {
 site = ZeroLaunch(src='site_src', dest='site_public', config=cfg)
 
 # --- Collections (Jekyll-style filesystem)
-# Prefer simple filesystem collections using YAML front matter in Markdown files.
-# Example layout:
 # content/posts/2026-01-01-hello-world.md
 # ---
 # title: Hello World
@@ -29,9 +27,6 @@ site = ZeroLaunch(src='site_src', dest='site_public', config=cfg)
 site.add_collection('posts', path='content/posts', renderer='md')
 site.add_collection('pages', path='content/pages', renderer='md')
 
-# You can still programmatically create single pages if needed (optional):
-# site.create_page(collection='posts', path='welcome.md', front_matter={...}, content='...')
-
 # --- Renderers
 site.register_renderer('md', engine='markdown', options={'extensions': ['fenced_code', 'tables', 'codehilite']})
 site.register_renderer('rst', engine='docutils')
@@ -41,6 +36,7 @@ site.register_renderer('adoc', engine='asciidoc')
 site.add_template('base.html', open('layouts/base.html').read())
 site.add_template('post.html', open('layouts/post.html').read())
 
+# --- Filters
 def excerpt(text, length=140):
 	return (text[:length].rsplit(' ', 1)[0] + '...') if len(text) > length else text
 
@@ -88,17 +84,6 @@ site.generate_collection_pages(collection='posts', template='posts_index.html', 
 site.generate_taxonomy_pages('tags', template='tag_list.html')
 site.generate_taxonomy_pages('categories', template='category_list.html')
 
-# --- i18n
-site.config['default_locale'] = 'en'
-site.add_locale('es')
-site.add_locale('fr')
-site.create_page(path='index.en.md', content='# Hello')
-site.create_page(path='index.es.md', content='# Hola')
-site.build(i18n=True)
-
-# --- Drafts and scheduled publishing
-site.create_page(path='drafts/future.md', front_matter={'title': 'Future Post', 'date': '2099-01-01', 'published': False}, content='...')
-
 # --- Hooks and pipeline
 def before(site_obj):
 	print('Running before build hook for', site_obj.config.get('site_name'))
@@ -136,3 +121,8 @@ site.deploy(target='sftp', options={
 # --- Image processing
 # site.add_image('images/hero.jpg')
 # site.process_images(rules=[{'resize': [800, 600], 'format': 'webp', 'quality': 80}, {'resize': [400, 300], 'format': 'jpeg'}])
+
+# --- i18n
+# site.config['default_locale'] = 'en'
+# site.add_locale('es')
+# site.add_locale('fr')
